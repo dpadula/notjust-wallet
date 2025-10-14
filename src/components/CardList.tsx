@@ -15,8 +15,10 @@ const cards = [
 
 const CardList = () => {
   return (
-    <View>
-      <Image style={styles.image} source={cards[0]} />
+    <View style={styles.container}>
+      {cards.map((card, index) => (
+        <Image key={index} style={styles.image} source={card} />
+      ))}
     </View>
   );
 };
@@ -24,9 +26,13 @@ const CardList = () => {
 export default CardList;
 
 const styles = StyleSheet.create({
+  container: {
+    padding: 10,
+  },
   image: {
     width: '100%',
     height: undefined,
     aspectRatio: 7 / 4,
+    marginVertical: 5,
   },
 });

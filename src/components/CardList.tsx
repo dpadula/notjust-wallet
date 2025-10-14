@@ -37,7 +37,7 @@ const CardList = () => {
           holderName='Star Burst'
           expiry='03/25'
           cvv='942'
-          brand='amex'
+          brand='mastercard'
           //   onPress={() => console.log('tarjeta tocada')}
         />
         {/* ))} */}

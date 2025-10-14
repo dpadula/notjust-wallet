@@ -23,6 +23,7 @@ interface CardProps {
   expiry?: string;
   cvv?: string;
   brand?: Brand;
+  sizeBrand?: number;
   gradientColors?: string[];
   style?: ViewStyle;
   onPress?: (e: GestureResponderEvent) => void;
@@ -40,6 +41,7 @@ const Card = ({
   expiry = 'MM/YY',
   cvv = '***',
   brand = 'generic',
+  sizeBrand = 40,
   gradientColors = [],
   style,
   onPress,
@@ -63,7 +65,7 @@ const Card = ({
     }
   };
 
-  const brandIcon = (brand?: Brand, size = 40) => {
+  const brandIcon = (brand?: Brand, size = 36) => {
     switch (brand) {
       case 'visa':
         return <FontAwesome name='cc-visa' size={size} color='white' />;
@@ -93,7 +95,7 @@ const Card = ({
       groups.push(digits.slice(i, i + 4));
     }
     while (groups.length < 4) groups.push('----');
-    return groups.slice(0, 4).join(' ');
+    return groups.slice(0, 4).join('  ');
   };
 
   // 🔸 Variables derivadas
@@ -124,14 +126,14 @@ const Card = ({
           {showChip && (
             <View style={styles.chipBox}>
               <MaterialCommunityIcons
-                name='credit-card-chip'
-                size={28}
+                name='integrated-circuit-chip'
+                size={38}
                 color='#ffffffcc'
               />
             </View>
           )}
 
-          <View style={styles.rightTop}>{brandIcon(brand, 44)}</View>
+          <View style={styles.rightTop}>{brandIcon(brand, sizeBrand)}</View>
         </View>
 
         {/* Middle: number + contactless */}
@@ -139,10 +141,10 @@ const Card = ({
           <Text style={styles.cardNumber}>{formattedNumber}</Text>
           {showContactless && (
             <MaterialCommunityIcons
-              name='wifi'
-              size={26}
+              name='contactless-payment'
+              size={24}
               color='white'
-              style={{ transform: [{ rotate: '90deg' }] }}
+              //   style={{ transform: [{ rotate: '90deg' }] }}
             />
           )}
         </View>
@@ -198,7 +200,6 @@ const styles = StyleSheet.create({
   },
   chipBox: {
     backgroundColor: 'rgba(255,255,255,0.12)',
-    padding: 8,
     borderRadius: 6,
     width: 48,
     height: 38,
@@ -216,9 +217,9 @@ const styles = StyleSheet.create({
   },
   cardNumber: {
     color: 'white',
-    fontSize: 20,
-    letterSpacing: 2,
-    fontWeight: '700',
+    fontSize: 14,
+    letterSpacing: 0.8,
+    fontWeight: '500',
     flex: 1,
   },
   bottomRow: {
@@ -230,15 +231,15 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   smallLabel: {
-    color: 'rgba(255,255,255,0.85)',
-    fontSize: 11,
-    fontWeight: '600',
+    color: 'rgba(201, 201, 201, 0.85)',
+    fontSize: 8,
+    fontWeight: '400',
     opacity: 0.9,
   },
   bigText: {
     color: 'white',
-    fontSize: 16,
-    fontWeight: '700',
+    fontSize: 13,
+    fontWeight: '500',
     marginTop: 4,
   },
 });

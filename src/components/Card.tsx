@@ -141,6 +141,11 @@ const Card = ({
             preserveAspectRatio='none'
             style={styles.waveSvg}
           >
+            {/* Capa 4 */}
+            <Path
+              d='M0 0 Q100 130 200 60 T400 100 L400 240 L0 240 Z'
+              fill='rgba(255,255,255,0.25)'
+            />
             {/* Capa 1 */}
             <Path
               // Inicia en Y=140, punto de control en 80, luego se repite
@@ -149,12 +154,12 @@ const Card = ({
             />
             {/* Capa 2 */}
             <Path
-              d='M0 60 Q100 220 200 140 T400 160 L400 240 L0 240 Z'
+              d='M0 40 Q100 220 200 140 T400 160 L400 240 L0 240 Z'
               fill='rgba(255,255,255,0.25)'
             />
             {/* Capa 3 */}
             <Path
-              d='M0 120 Q100 260 200 180 T400 190 L400 240 L0 240 Z'
+              d='M0 60 Q100 260 200 180 T400 190 L400 240 L0 240 Z'
               fill='rgba(255,255,255,0.25)'
             />
           </Svg>
@@ -165,7 +170,7 @@ const Card = ({
             <View style={styles.chipBox}>
               <MaterialCommunityIcons
                 name='integrated-circuit-chip'
-                size={38}
+                size={34}
                 color={cardTextColor}
               />
             </View>
@@ -281,8 +286,8 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(0,0,0,0.25)',
     borderWidth: 1,
     borderRadius: 6,
-    width: 48,
-    height: 38,
+    width: 42,
+    height: 36,
     justifyContent: 'center',
     alignItems: 'center',
   },

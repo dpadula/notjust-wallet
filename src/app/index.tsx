@@ -1,14 +1,17 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import CardList from '../components/CardList';
 
 export default function Index() {
   return (
-    <SafeAreaView style={styles.container}>
-      <CardList />
-      <StatusBar style='auto' />
-    </SafeAreaView>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <SafeAreaView style={styles.container}>
+        <CardList />
+        <StatusBar style='auto' />
+      </SafeAreaView>
+    </GestureHandlerRootView>
   );
 }
 

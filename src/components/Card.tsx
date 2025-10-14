@@ -135,7 +135,7 @@ const Card = ({
 
     if (masked) {
       const last4 = digits.slice(-4).padStart(4, '*');
-      const groups = ['****', '****', '****', last4];
+      const groups = ['••••', '••••', '••••', last4];
       return groups.join(' ');
     }
 
@@ -304,7 +304,7 @@ const Card = ({
                 { color: cardTextColor },
               ]}
             >
-              {cvv}
+              {numberMasked ? '•••' : cvv}
             </Text>
           </View>
         </View>

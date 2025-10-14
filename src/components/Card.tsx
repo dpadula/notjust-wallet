@@ -2,12 +2,14 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import { LinearGradient } from 'expo-linear-gradient';
-import React from 'react';
+import React, { useState } from 'react';
 import {
   GestureResponderEvent,
+  LayoutChangeEvent,
   StyleSheet,
   Text,
   TouchableOpacity,
+  useWindowDimensions,
   View,
   ViewStyle,
 } from 'react-native';
@@ -55,13 +57,24 @@ const Card = ({
   color = '#fff',
   alphaFactor = 1,
 }: CardProps) => {
+  const { width: windowWidth } = useWindowDimensions();
+  const [cardWidth, setCardWidth] = useState(windowWidth * 0.9);
+
+  // Se usa el ancho real de la tarjeta para calcular escala
+  const scale = cardWidth / 400; // 360 = base de referencia (diseño original)
+
+  const onLayout = (e: LayoutChangeEvent) => {
+    const { width } = e.nativeEvent.layout;
+    setCardWidth(width);
+  };
+
   // 🔸 Helpers internos como funciones tipo const
   const defaultColorsForBrand = (brand?: Brand): string[] => {
     switch (brand) {
       case 'visa':
         return ['#1A56DB', '#3B82F6'];
       case 'mastercard':
-        return ['#ff6a00', '#ff3b3b'];
+        return ['#ff6a00', '#ff0303ff'];
       case 'amex':
         return ['#0077a2', '#2bc0e4'];
       case 'discover':
@@ -74,20 +87,44 @@ const Card = ({
   const brandIcon = (brand?: Brand, size = 36) => {
     switch (brand) {
       case 'visa':
-        return <FontAwesome name='cc-visa' size={size} color={cardTextColor} />;
+        return (
+          <FontAwesome
+            name='cc-visa'
+            size={size * scale}
+            color={cardTextColor}
+          />
+        );
       case 'mastercard':
         return (
-          <FontAwesome name='cc-mastercard' size={size} color={cardTextColor} />
+          <FontAwesome
+            name='cc-mastercard'
+            size={size * scale}
+            color={cardTextColor}
+          />
         );
       case 'amex':
-        return <FontAwesome name='cc-amex' size={size} color={cardTextColor} />;
+        return (
+          <FontAwesome
+            name='cc-amex'
+            size={size * scale}
+            color={cardTextColor}
+          />
+        );
       case 'discover':
         return (
-          <FontAwesome5 name='cc-discover' size={size} color={cardTextColor} />
+          <FontAwesome5
+            name='cc-discover'
+            size={size * scale}
+            color={cardTextColor}
+          />
         );
       default:
         return (
-          <FontAwesome5 name='credit-card' size={size} color={cardTextColor} />
+          <FontAwesome5
+            name='credit-card'
+            size={size * scale}
+            color={cardTextColor}
+          />
         );
     }
   };
@@ -127,7 +164,8 @@ const Card = ({
     <TouchableOpacity
       activeOpacity={onPress ? 0.8 : 1}
       onPress={onPress}
-      style={[styles.container, style]}
+      style={[styles.container, { width: '90%', aspectRatio: 1.6 }, style]}
+      onLayout={onLayout}
     >
       <LinearGradient
         colors={colors}
@@ -167,10 +205,15 @@ const Card = ({
         {/* Top row: chip + brand */}
         <View style={styles.topRow}>
           {showChip && (
-            <View style={styles.chipBox}>
+            <View
+              style={[
+                styles.chipBox,
+                { width: 42 * scale, height: 36 * scale },
+              ]}
+            >
               <MaterialCommunityIcons
                 name='integrated-circuit-chip'
-                size={34}
+                size={32 * scale}
                 color={cardTextColor}
               />
             </View>
@@ -181,13 +224,19 @@ const Card = ({
 
         {/* Middle: number + contactless */}
         <View style={styles.middleRow}>
-          <Text style={[styles.cardNumber, { color: cardTextColor }]}>
+          <Text
+            style={[
+              styles.cardNumber,
+              { fontSize: 14 * scale },
+              { color: cardTextColor },
+            ]}
+          >
             {formattedNumber}
           </Text>
           {showContactless && (
             <MaterialCommunityIcons
               name='contactless-payment'
-              size={24}
+              size={24 * scale}
               color={cardTextColor}
               //   style={{ transform: [{ rotate: '90deg' }] }}
             />
@@ -197,28 +246,64 @@ const Card = ({
         {/* Bottom: name / exp / cvv */}
         <View style={styles.bottomRow}>
           <View style={styles.bottomColumn}>
-            <Text style={[styles.smallLabel, { color: cardTextColor }]}>
+            <Text
+              style={[
+                styles.smallLabel,
+                { fontSize: 8 * scale },
+                { color: cardTextColor },
+              ]}
+            >
               Card Holder
             </Text>
-            <Text style={[styles.bigText, { color: cardTextColor }]}>
+            <Text
+              style={[
+                styles.bigText,
+                { fontSize: 13 * scale },
+                { color: cardTextColor },
+              ]}
+            >
               {holderName}
             </Text>
           </View>
 
           <View style={[styles.bottomColumn, { marginLeft: 18 }]}>
-            <Text style={[styles.smallLabel, { color: cardTextColor }]}>
+            <Text
+              style={[
+                styles.smallLabel,
+                { fontSize: 8 * scale },
+                { color: cardTextColor },
+              ]}
+            >
               Expires
             </Text>
-            <Text style={[styles.bigText, { color: cardTextColor }]}>
+            <Text
+              style={[
+                styles.bigText,
+                { fontSize: 13 * scale },
+                { color: cardTextColor },
+              ]}
+            >
               {expiry}
             </Text>
           </View>
 
           <View style={[styles.bottomColumn, { marginLeft: 18 }]}>
-            <Text style={[styles.smallLabel, { color: cardTextColor }]}>
+            <Text
+              style={[
+                styles.smallLabel,
+                { fontSize: 8 * scale },
+                { color: cardTextColor },
+              ]}
+            >
               CVV
             </Text>
-            <Text style={[styles.bigText, { color: cardTextColor }]}>
+            <Text
+              style={[
+                styles.bigText,
+                { fontSize: 13 * scale },
+                { color: cardTextColor },
+              ]}
+            >
               {cvv}
             </Text>
           </View>
@@ -256,21 +341,6 @@ const styles = StyleSheet.create({
     borderRadius: 18,
     overflow: 'hidden',
   },
-  circle: {
-    position: 'absolute',
-    width: 180,
-    height: 180,
-    borderRadius: 90,
-  },
-  wave: {
-    position: 'absolute',
-    bottom: 0,
-    width: '120%',
-    height: 80,
-    borderTopLeftRadius: 100,
-    borderTopRightRadius: 100,
-    transform: [{ rotate: '-15deg' }],
-  },
   waveSvg: {
     position: 'absolute',
     bottom: 0,
@@ -286,8 +356,6 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(0,0,0,0.25)',
     borderWidth: 1,
     borderRadius: 6,
-    width: 42,
-    height: 36,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -301,7 +369,6 @@ const styles = StyleSheet.create({
     marginTop: 6,
   },
   cardNumber: {
-    fontSize: 14,
     letterSpacing: 0.8,
     fontWeight: '500',
     flex: 1,
@@ -315,12 +382,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   smallLabel: {
-    fontSize: 8,
     fontWeight: '400',
     opacity: 0.9,
   },
   bigText: {
-    fontSize: 13,
     fontWeight: '500',
     marginTop: 4,
   },

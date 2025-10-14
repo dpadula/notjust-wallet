@@ -121,6 +121,21 @@ const Card = ({
         end={[1, 1]}
         style={styles.gradient}
       >
+        <View style={styles.shapesContainer}>
+          <View
+            style={[
+              styles.circle,
+              { backgroundColor: '#ffffff30', top: -60, left: -40 },
+            ]}
+          />
+          <View style={[styles.wave, { backgroundColor: '#ffffff25' }]} />
+          <View
+            style={[
+              styles.circle,
+              { backgroundColor: '#ffffff20', bottom: -40, right: -50 },
+            ]}
+          />
+        </View>
         {/* Top row: chip + brand */}
         <View style={styles.topRow}>
           {showChip && (
@@ -187,12 +202,33 @@ const styles = StyleSheet.create({
     shadowRadius: 12,
     elevation: 6,
     marginVertical: 10,
+    backgroundColor: '#fff',
   },
   gradient: {
     flex: 1,
     padding: 18,
     borderRadius: 18,
     justifyContent: 'space-between',
+  },
+  shapesContainer: {
+    ...StyleSheet.absoluteFillObject,
+    borderRadius: 18,
+    overflow: 'hidden',
+  },
+  circle: {
+    position: 'absolute',
+    width: 180,
+    height: 180,
+    borderRadius: 90,
+  },
+  wave: {
+    position: 'absolute',
+    bottom: 0,
+    width: '120%',
+    height: 80,
+    borderTopLeftRadius: 100,
+    borderTopRightRadius: 100,
+    transform: [{ rotate: '-15deg' }],
   },
   topRow: {
     flexDirection: 'row',

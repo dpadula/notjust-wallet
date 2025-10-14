@@ -11,6 +11,7 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
+import Svg, { Path } from 'react-native-svg';
 
 // ====================
 // 🔹 Tipos y Props
@@ -122,19 +123,27 @@ const Card = ({
         style={styles.gradient}
       >
         <View style={styles.shapesContainer}>
-          <View
-            style={[
-              styles.circle,
-              { backgroundColor: '#ffffff30', top: -60, left: -40 },
-            ]}
-          />
-          <View style={[styles.wave, { backgroundColor: '#ffffff25' }]} />
-          <View
-            style={[
-              styles.circle,
-              { backgroundColor: '#ffffff20', bottom: -40, right: -50 },
-            ]}
-          />
+          <Svg
+            viewBox='0 0 400 240'
+            preserveAspectRatio='none'
+            style={styles.waveSvg}
+          >
+            {/* Capa 1 (más clara, al fondo) */}
+            <Path
+              d='M0 160 Q100 120 200 160 T400 160 L400 240 L0 240 Z'
+              fill='rgba(255,255,255,0.25)'
+            />
+            {/* Capa 2 */}
+            <Path
+              d='M0 180 Q100 140 200 180 T400 180 L400 240 L0 240 Z'
+              fill='rgba(255,255,255,0.35)'
+            />
+            {/* Capa 3 */}
+            <Path
+              d='M0 200 Q100 160 200 200 T400 200 L400 240 L0 240 Z'
+              fill='rgba(255,255,255,0.45)'
+            />
+          </Svg>
         </View>
         {/* Top row: chip + brand */}
         <View style={styles.topRow}>
@@ -229,6 +238,12 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 100,
     borderTopRightRadius: 100,
     transform: [{ rotate: '-15deg' }],
+  },
+  waveSvg: {
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    height: '60%',
   },
   topRow: {
     flexDirection: 'row',

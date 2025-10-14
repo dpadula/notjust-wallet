@@ -128,20 +128,21 @@ const Card = ({
             preserveAspectRatio='none'
             style={styles.waveSvg}
           >
-            {/* Capa 1 (más clara, al fondo) */}
+            {/* Capa 1 */}
             <Path
-              d='M0 160 Q100 120 200 160 T400 160 L400 240 L0 240 Z'
-              fill='rgba(255,255,255,0.25)'
+              // Inicia en Y=140, punto de control en 80, luego se repite
+              d='M0 20 Q100 180 200 100 T400 140 L400 240 L0 240 Z'
+              fill='rgba(255,255,255,0.15)'
             />
             {/* Capa 2 */}
             <Path
-              d='M0 180 Q100 140 200 180 T400 180 L400 240 L0 240 Z'
-              fill='rgba(255,255,255,0.35)'
+              d='M0 60 Q100 220 200 140 T400 160 L400 240 L0 240 Z'
+              fill='rgba(255,255,255,0.25)'
             />
             {/* Capa 3 */}
             <Path
-              d='M0 200 Q100 160 200 200 T400 200 L400 240 L0 240 Z'
-              fill='rgba(255,255,255,0.45)'
+              d='M0 120 Q100 260 200 180 T400 190 L400 240 L0 240 Z'
+              fill='rgba(255,255,255,0.25)'
             />
           </Svg>
         </View>

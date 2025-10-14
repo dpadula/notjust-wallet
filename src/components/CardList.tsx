@@ -32,6 +32,8 @@ const CardList = () => {
         {/* {cards.map((card, index) => ( */}
         <Image style={styles.image} source={cards[0]} />
         <Card
+          color='#0a0a0a'
+          alphaFactor={0.9}
           style={styles.image}
           cardNumber='5439 5154 7858 2335'
           holderName='Star Burst'

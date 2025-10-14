@@ -1,6 +1,7 @@
 import React from 'react';
 import { Image, StyleSheet, View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import Card from './Card';
 
 const cards = [
   require('../../assets/cards/Card 1.png'),
@@ -28,9 +29,18 @@ const CardList = () => {
   return (
     <GestureDetector gesture={pan}>
       <View style={styles.container}>
-        {cards.map((card, index) => (
-          <Image key={index} style={styles.image} source={card} />
-        ))}
+        {/* {cards.map((card, index) => ( */}
+        <Image style={styles.image} source={cards[0]} />
+        <Card
+          style={styles.image}
+          cardNumber='5439 5154 7858 2335'
+          holderName='Star Burst'
+          expiry='03/25'
+          cvv='942'
+          brand='amex'
+          //   onPress={() => console.log('tarjeta tocada')}
+        />
+        {/* ))} */}
       </View>
     </GestureDetector>
   );

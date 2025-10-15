@@ -5,11 +5,12 @@ import { StyleSheet, View } from 'react-native';
 type ChipProps = {
   size?: number;
   color?: string;
+  padding?: number;
 };
 
-const Chip = ({ size = 36, color }: ChipProps) => {
+const Chip = ({ size = 36, color, padding }: ChipProps) => {
   return (
-    <View style={[styles.chipBox]}>
+    <View style={[styles.chipBox, { paddingHorizontal: padding }]}>
       <MaterialCommunityIcons
         name='integrated-circuit-chip'
         size={size}
@@ -29,6 +30,5 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingHorizontal: 6,
   },
 });

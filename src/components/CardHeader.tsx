@@ -10,6 +10,7 @@ interface CardHeaderProps {
   brandSize: number;
   chipSize: number;
   color: string;
+  paddingChip: number;
 }
 
 const CardHeader = ({
@@ -18,10 +19,11 @@ const CardHeader = ({
   color,
   brandSize = 40,
   chipSize = 36,
+  paddingChip = 6,
 }: CardHeaderProps) => {
   return (
     <View style={styles.topRow}>
-      {showChip && <Chip size={chipSize} color={color} />}
+      {showChip && <Chip size={chipSize} color={color} padding={paddingChip} />}
       <CreditCardBrand brand={brand} size={brandSize} color={color} />
     </View>
   );

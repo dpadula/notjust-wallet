@@ -60,7 +60,6 @@ const Card = ({
     setCardWidth(width);
   };
 
-  // 🔸 Helpers internos como funciones tipo const
   const defaultColorsForBrand = (brand?: Brand): string[] => {
     switch (brand) {
       case 'visa':
@@ -76,7 +75,6 @@ const Card = ({
     }
   };
 
-  // 🔸 Variables derivadas
   const colors: [string, string, ...string[]] = (
     gradientColors && gradientColors.length >= 2
       ? gradientColors
@@ -88,9 +86,6 @@ const Card = ({
   const cardTextColor =
     alphaFactor != null ? applyAlphaToColor(color, alphaFactor) : color;
 
-  // ====================
-  // 🔹 Render principal
-  // ====================
   return (
     <View style={style} onLayout={onLayout}>
       <LinearGradient
@@ -109,6 +104,7 @@ const Card = ({
           brand={brand}
           brandSize={sizeBrand * scale}
           chipSize={36 * scale}
+          paddingChip={6 * scale}
           color={cardTextColor}
         />
         {/* Middle row: number + contactless */}
@@ -133,9 +129,6 @@ const Card = ({
   );
 };
 
-// ====================
-// 🔹 Estilos
-// ====================
 const styles = StyleSheet.create({
   gradient: {
     flex: 1,

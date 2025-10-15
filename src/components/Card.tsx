@@ -7,7 +7,11 @@ import {
   useWindowDimensions,
   ViewStyle,
 } from 'react-native';
-import Animated from 'react-native-reanimated';
+import Animated, {
+  clamp,
+  SharedValue,
+  useAnimatedStyle,
+} from 'react-native-reanimated';
 import { Brand } from '../model/types';
 import { applyAlphaToColor } from '../util/alphaColor';
 import { formatCreditCardNumber } from '../util/formatCreditCardNumber';
@@ -17,6 +21,8 @@ import CardHeader from './CardHeader';
 import Waves from './Waves';
 
 interface CardProps {
+  index: number;
+  scrollY: SharedValue<number>;
   cardNumber: string;
   holderName?: string;
   expiry?: string;
@@ -36,6 +42,8 @@ interface CardProps {
 // 🔹 Componente principal
 // ====================
 const Card = ({
+  index = 0,
+  scrollY,
   cardNumber,
   holderName = 'Card Holder',
   expiry = 'MM/YY',
@@ -87,8 +95,14 @@ const Card = ({
   const cardTextColor =
     alphaFactor != null ? applyAlphaToColor(color, alphaFactor) : color;
 
+  const animatedCardStyle = useAnimatedStyle(() => {
+    const translateY = clamp(-scrollY.value, -index * 200, 0);
+    return {
+      transform: [{ translateY }],
+    };
+  });
   return (
-    <Animated.View style={style} onLayout={onLayout}>
+    <Animated.View style={[style, animatedCardStyle]} onLayout={onLayout}>
       <LinearGradient
         colors={colors}
         start={[0, 0]}

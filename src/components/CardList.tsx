@@ -1,11 +1,43 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
-import { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
+import {
+  useAnimatedStyle,
+  useSharedValue,
+  withDecay,
+} from 'react-native-reanimated';
 import { Brand } from '../model/types';
 import Card from './Card';
 
 const cards = [
+  {
+    cardNumber: '5439 5154 7858 2335',
+    holderName: 'Star Burst',
+    expiry: '03/25',
+    cvv: '942',
+    brand: 'discover',
+  },
+  {
+    cardNumber: '5439 5154 7858 2335',
+    holderName: 'Star Burst',
+    expiry: '03/25',
+    cvv: '942',
+    brand: 'visa',
+  },
+  {
+    cardNumber: '5439 5154 7858 2335',
+    holderName: 'Star Burst',
+    expiry: '03/25',
+    cvv: '942',
+    brand: 'mastercard',
+  },
+  {
+    cardNumber: '5439 5154 7858 2335',
+    holderName: 'Star Burst',
+    expiry: '03/25',
+    cvv: '942',
+    brand: 'amex',
+  },
   {
     cardNumber: '5439 5154 7858 2335',
     holderName: 'Star Burst',
@@ -39,7 +71,7 @@ const cards = [
 const CardList = () => {
   const scrollY = useSharedValue(0);
   const animatedCardStyle = useAnimatedStyle(() => ({
-    transform: [{ translateY: scrollY.value }],
+    transform: [{ translateY: -scrollY.value }],
   }));
   const pan = Gesture.Pan()
     .onStart(() => {
@@ -49,7 +81,8 @@ const CardList = () => {
       scrollY.value = scrollY.value - e.changeY;
       console.log('🚀 ~ CardList ~ scrollY.value:', scrollY.value);
     })
-    .onEnd(() => {
+    .onEnd((e) => {
+      scrollY.value = withDecay({ velocity: -e.velocityY });
       console.log('pan ended');
     });
   return (

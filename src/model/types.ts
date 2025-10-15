@@ -1,0 +1,1 @@
+export type Brand = 'visa' | 'mastercard' | 'amex' | 'discover' | 'generic';

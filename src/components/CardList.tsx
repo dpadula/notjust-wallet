@@ -40,7 +40,6 @@ const CardList = () => {
           expiry='03/25'
           cvv='942'
           brand='mastercard'
-          //   onPress={() => console.log('tarjeta tocada')}
         />
         {/* ))} */}
       </View>

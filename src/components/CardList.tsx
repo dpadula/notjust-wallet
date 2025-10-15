@@ -157,15 +157,7 @@ const CardList = () => {
             key={index}
             color='#0a0a0a'
             alphaFactor={0.9}
-            style={[
-              {
-                width: '100%',
-                height: undefined,
-                aspectRatio: 7 / 4,
-                marginVertical: 5,
-              },
-              animatedCardStyle,
-            ]}
+            style={[styles.card, animatedCardStyle]}
             cardNumber={card.cardNumber}
             holderName={card.holderName}
             expiry={card.expiry}
@@ -183,5 +175,11 @@ export default CardList;
 const styles = StyleSheet.create({
   container: {
     padding: 10,
+  },
+  card: {
+    width: '100%',
+    height: undefined,
+    aspectRatio: 7 / 4,
+    marginVertical: 5,
   },
 });

@@ -1,14 +1,19 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { DimensionValue, StyleSheet, View } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 
-const Waves = () => {
+type WaveProps = {
+  borderRadius: number;
+  height: DimensionValue | undefined;
+};
+
+const Waves = ({ borderRadius, height }: WaveProps) => {
   return (
-    <View style={styles.shapesContainer}>
+    <View style={[styles.shapesContainer, { borderRadius }]}>
       <Svg
         viewBox='0 0 400 240'
         preserveAspectRatio='none'
-        style={styles.waveSvg}
+        style={[styles.waveSvg, { height }]}
       >
         {/* Capa 1 */}
         <Path
@@ -41,13 +46,11 @@ export default Waves;
 const styles = StyleSheet.create({
   shapesContainer: {
     ...StyleSheet.absoluteFillObject,
-    borderRadius: 18,
     overflow: 'hidden',
   },
   waveSvg: {
     position: 'absolute',
     bottom: 0,
     width: '100%',
-    height: '60%',
   },
 });

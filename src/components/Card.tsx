@@ -64,13 +64,13 @@ const Card = ({
   const defaultColorsForBrand = (brand?: Brand): string[] => {
     switch (brand) {
       case 'visa':
-        return ['#1A56DB', '#3B82F6'];
+        return ['#1434CB', '#FFFFFF', '#FCC015'];
       case 'mastercard':
-        return ['#ff6a00', '#ff0303ff'];
+        return ['#eb001b', '#ff5f00', '#FFFFFF', '#f79e1bff'];
       case 'amex':
-        return ['#0077a2', '#2bc0e4'];
+        return ['#016FD0', '#FFFFFF', '#001eb3ff'];
       case 'discover':
-        return ['#F0C14B', '#FF8A00'];
+        return ['#000000', '#F79C1F', '#922F0B'];
       default:
         return ['#f6d365', '#fda085'];
     }
@@ -97,9 +97,12 @@ const Card = ({
         colors={colors}
         start={[0, 0]}
         end={[1, 1]}
-        style={styles.gradient}
+        style={[
+          styles.gradient,
+          { borderRadius: 18 * scale, padding: 18 * scale },
+        ]}
       >
-        <Waves />
+        <Waves borderRadius={18 * scale} height={150 * scale} />
         {/* Top row: CardHeader = chip + brand */}
         <CardHeader
           showChip={showChip}
@@ -136,20 +139,8 @@ const Card = ({
 const styles = StyleSheet.create({
   gradient: {
     flex: 1,
-    padding: 18,
-    borderRadius: 18,
     justifyContent: 'space-between',
-  },
-  middleRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    marginTop: 8,
-  },
-  cardNumber: {
-    letterSpacing: 0.2,
-    fontWeight: '700',
-    flex: 1,
+    overflow: 'hidden',
   },
 });
 

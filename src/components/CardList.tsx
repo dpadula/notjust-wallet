@@ -1,18 +1,47 @@
 import React from 'react';
-import { Image, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import { Brand } from '../model/types';
 import Card from './Card';
 
 const cards = [
-  require('../../assets/cards/Card 1.png'),
-  require('../../assets/cards/Card 2.png'),
-  require('../../assets/cards/Card 3.png'),
-  require('../../assets/cards/Card 4.png'),
-  require('../../assets/cards/Card 5.png'),
-  require('../../assets/cards/Card 6.png'),
-  require('../../assets/cards/Card 7.png'),
-  require('../../assets/cards/Card 8.png'),
-  require('../../assets/cards/Card 9.png'),
+  // require('../../assets/cards/Card 1.png'),
+  // require('../../assets/cards/Card 2.png'),
+  // require('../../assets/cards/Card 3.png'),
+  // require('../../assets/cards/Card 4.png'),
+  // require('../../assets/cards/Card 5.png'),
+  // require('../../assets/cards/Card 6.png'),
+  // require('../../assets/cards/Card 7.png'),
+  // require('../../assets/cards/Card 8.png'),
+  // require('../../assets/cards/Card 9.png'),
+  {
+    cardNumber: '5439 5154 7858 2335',
+    holderName: 'Star Burst',
+    expiry: '03/25',
+    cvv: '942',
+    brand: 'discover',
+  },
+  {
+    cardNumber: '5439 5154 7858 2335',
+    holderName: 'Star Burst',
+    expiry: '03/25',
+    cvv: '942',
+    brand: 'visa',
+  },
+  {
+    cardNumber: '5439 5154 7858 2335',
+    holderName: 'Star Burst',
+    expiry: '03/25',
+    cvv: '942',
+    brand: 'mastercard',
+  },
+  {
+    cardNumber: '5439 5154 7858 2335',
+    holderName: 'Star Burst',
+    expiry: '03/25',
+    cvv: '942',
+    brand: 'amex',
+  },
 ];
 
 const CardList = () => {
@@ -29,19 +58,19 @@ const CardList = () => {
   return (
     <GestureDetector gesture={pan}>
       <View style={styles.container}>
-        {/* {cards.map((card, index) => ( */}
-        <Image style={styles.image} source={cards[0]} />
-        <Card
-          color='#0a0a0a'
-          alphaFactor={0.9}
-          style={styles.image}
-          cardNumber='5439 5154 7858 2335'
-          holderName='Star Burst'
-          expiry='03/25'
-          cvv='942'
-          brand='mastercard'
-        />
-        {/* ))} */}
+        {cards.map((card, index) => (
+          <Card
+            key={index}
+            color='#0a0a0a'
+            alphaFactor={0.9}
+            style={styles.image}
+            cardNumber={card.cardNumber}
+            holderName={card.holderName}
+            expiry={card.expiry}
+            cvv={card.cvv}
+            brand={card.brand as Brand}
+          />
+        ))}
       </View>
     </GestureDetector>
   );

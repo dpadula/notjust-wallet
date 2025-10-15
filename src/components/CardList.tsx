@@ -1,5 +1,5 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import React, { useState } from 'react';
+import { StyleSheet, useWindowDimensions, View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import {
   cancelAnimation,
@@ -128,7 +128,11 @@ const cards = [
 ];
 
 const CardList = () => {
+  const { height: screenHeight } = useWindowDimensions();
+  const [listHeight, setListHeight] = useState(0);
   const scrollY = useSharedValue(0);
+  const maxScrollY = listHeight - screenHeight + 100;
+
   const animatedCardStyle = useAnimatedStyle(() => ({
     transform: [{ translateY: -scrollY.value }],
   }));
@@ -140,18 +144,21 @@ const CardList = () => {
       console.log('pan started');
     })
     .onChange((e) => {
-      scrollY.value = clamp(scrollY.value - e.changeY, 0, 2000);
+      scrollY.value = clamp(scrollY.value - e.changeY, 0, maxScrollY);
     })
     .onEnd((e) => {
       scrollY.value = withClamp(
-        { min: 0, max: 2000 },
+        { min: 0, max: maxScrollY },
         withDecay({ velocity: -e.velocityY })
       );
       console.log('pan ended');
     });
   return (
     <GestureDetector gesture={pan}>
-      <View style={styles.container}>
+      <View
+        style={styles.container}
+        onLayout={(e) => setListHeight(e.nativeEvent.layout.height)}
+      >
         {cards.map((card, index) => (
           <Card
             key={index}

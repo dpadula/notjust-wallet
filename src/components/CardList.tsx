@@ -9,6 +9,7 @@ import {
   withClamp,
   withDecay,
 } from 'react-native-reanimated';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Brand } from '../model/types';
 import Card from './Card';
 
@@ -131,7 +132,8 @@ const CardList = () => {
   const { height: screenHeight } = useWindowDimensions();
   const [listHeight, setListHeight] = useState(0);
   const scrollY = useSharedValue(0);
-  const maxScrollY = listHeight - screenHeight + 100;
+  const insets = useSafeAreaInsets();
+  const maxScrollY = listHeight - screenHeight + insets.top;
 
   const animatedCardStyle = useAnimatedStyle(() => ({
     transform: [{ translateY: -scrollY.value }],

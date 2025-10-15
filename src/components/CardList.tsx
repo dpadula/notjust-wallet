@@ -1,19 +1,11 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
+import { useAnimatedStyle, useSharedValue } from 'react-native-reanimated';
 import { Brand } from '../model/types';
 import Card from './Card';
 
 const cards = [
-  // require('../../assets/cards/Card 1.png'),
-  // require('../../assets/cards/Card 2.png'),
-  // require('../../assets/cards/Card 3.png'),
-  // require('../../assets/cards/Card 4.png'),
-  // require('../../assets/cards/Card 5.png'),
-  // require('../../assets/cards/Card 6.png'),
-  // require('../../assets/cards/Card 7.png'),
-  // require('../../assets/cards/Card 8.png'),
-  // require('../../assets/cards/Card 9.png'),
   {
     cardNumber: '5439 5154 7858 2335',
     holderName: 'Star Burst',
@@ -45,12 +37,17 @@ const cards = [
 ];
 
 const CardList = () => {
+  const scrollY = useSharedValue(0);
+  const animatedCardStyle = useAnimatedStyle(() => ({
+    transform: [{ translateY: scrollY.value }],
+  }));
   const pan = Gesture.Pan()
     .onStart(() => {
       console.log('pan started');
     })
     .onChange((e) => {
-      console.log('pan: ', e.changeY);
+      scrollY.value = scrollY.value - e.changeY;
+      console.log('🚀 ~ CardList ~ scrollY.value:', scrollY.value);
     })
     .onEnd(() => {
       console.log('pan ended');
@@ -63,7 +60,15 @@ const CardList = () => {
             key={index}
             color='#0a0a0a'
             alphaFactor={0.9}
-            style={styles.image}
+            style={[
+              {
+                width: '100%',
+                height: undefined,
+                aspectRatio: 7 / 4,
+                marginVertical: 5,
+              },
+              animatedCardStyle,
+            ]}
             cardNumber={card.cardNumber}
             holderName={card.holderName}
             expiry={card.expiry}
@@ -81,11 +86,5 @@ export default CardList;
 const styles = StyleSheet.create({
   container: {
     padding: 10,
-  },
-  image: {
-    width: '100%',
-    height: undefined,
-    aspectRatio: 7 / 4,
-    marginVertical: 5,
   },
 });

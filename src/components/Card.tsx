@@ -2,11 +2,12 @@ import { LinearGradient } from 'expo-linear-gradient';
 import React, { useState } from 'react';
 import {
   LayoutChangeEvent,
+  StyleProp,
   StyleSheet,
   useWindowDimensions,
-  View,
   ViewStyle,
 } from 'react-native';
+import Animated from 'react-native-reanimated';
 import { Brand } from '../model/types';
 import { applyAlphaToColor } from '../util/alphaColor';
 import { formatCreditCardNumber } from '../util/formatCreditCardNumber';
@@ -23,7 +24,7 @@ interface CardProps {
   brand?: Brand;
   sizeBrand?: number;
   gradientColors?: string[];
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
   showChip?: boolean;
   showContactless?: boolean;
   numberMasked?: boolean;
@@ -87,7 +88,7 @@ const Card = ({
     alphaFactor != null ? applyAlphaToColor(color, alphaFactor) : color;
 
   return (
-    <View style={style} onLayout={onLayout}>
+    <Animated.View style={style} onLayout={onLayout}>
       <LinearGradient
         colors={colors}
         start={[0, 0]}
@@ -125,7 +126,7 @@ const Card = ({
           bigTextSize={13 * scale}
         />
       </LinearGradient>
-    </View>
+    </Animated.View>
   );
 };
 

@@ -2,14 +2,73 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import {
+  cancelAnimation,
+  clamp,
   useAnimatedStyle,
   useSharedValue,
+  withClamp,
   withDecay,
 } from 'react-native-reanimated';
 import { Brand } from '../model/types';
 import Card from './Card';
 
 const cards = [
+  {
+    cardNumber: '5439 5154 7858 2335',
+    holderName: 'Star Burst',
+    expiry: '03/25',
+    cvv: '942',
+    brand: 'discover',
+  },
+  {
+    cardNumber: '5439 5154 7858 2335',
+    holderName: 'Star Burst',
+    expiry: '03/25',
+    cvv: '942',
+    brand: 'visa',
+  },
+  {
+    cardNumber: '5439 5154 7858 2335',
+    holderName: 'Star Burst',
+    expiry: '03/25',
+    cvv: '942',
+    brand: 'mastercard',
+  },
+  {
+    cardNumber: '5439 5154 7858 2335',
+    holderName: 'Star Burst',
+    expiry: '03/25',
+    cvv: '942',
+    brand: 'amex',
+  },
+  {
+    cardNumber: '5439 5154 7858 2335',
+    holderName: 'Star Burst',
+    expiry: '03/25',
+    cvv: '942',
+    brand: 'discover',
+  },
+  {
+    cardNumber: '5439 5154 7858 2335',
+    holderName: 'Star Burst',
+    expiry: '03/25',
+    cvv: '942',
+    brand: 'visa',
+  },
+  {
+    cardNumber: '5439 5154 7858 2335',
+    holderName: 'Star Burst',
+    expiry: '03/25',
+    cvv: '942',
+    brand: 'mastercard',
+  },
+  {
+    cardNumber: '5439 5154 7858 2335',
+    holderName: 'Star Burst',
+    expiry: '03/25',
+    cvv: '942',
+    brand: 'amex',
+  },
   {
     cardNumber: '5439 5154 7858 2335',
     holderName: 'Star Burst',
@@ -74,15 +133,20 @@ const CardList = () => {
     transform: [{ translateY: -scrollY.value }],
   }));
   const pan = Gesture.Pan()
+    .onBegin(() => {
+      cancelAnimation(scrollY);
+    })
     .onStart(() => {
       console.log('pan started');
     })
     .onChange((e) => {
-      scrollY.value = scrollY.value - e.changeY;
-      console.log('🚀 ~ CardList ~ scrollY.value:', scrollY.value);
+      scrollY.value = clamp(scrollY.value - e.changeY, 0, 2000);
     })
     .onEnd((e) => {
-      scrollY.value = withDecay({ velocity: -e.velocityY });
+      scrollY.value = withClamp(
+        { min: 0, max: 2000 },
+        withDecay({ velocity: -e.velocityY })
+      );
       console.log('pan ended');
     });
   return (

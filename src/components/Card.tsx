@@ -69,6 +69,8 @@ const Card = ({
   const [cardHeight, setCardHeight] = useState(0);
   const translateY = useSharedValue(0);
 
+  const cardVisiblePercentage = 0.95;
+
   // Se usa el ancho real de la tarjeta para calcular escala
   const scale = cardWidth / screenWidth; // ancho de la pantalla aproximado?
 
@@ -115,7 +117,11 @@ const Card = ({
   useAnimatedReaction(
     () => scrollY.value,
     (current) => {
-      translateY.value = clamp(-current, -index * cardHeight * 0.95, 0);
+      translateY.value = clamp(
+        -current,
+        -index * cardHeight * cardVisiblePercentage,
+        0
+      );
     }
   );
 
@@ -128,8 +134,10 @@ const Card = ({
       //Si no hay ninguna tarjeta activa activeCardIndex?.value = null, entonces mostrar la lista scrollable
       if (activeCardIndex.value === null) {
         translateY.value = withTiming(
-          clamp(-scrollY.value, -index * cardHeight * 0.95, 0)
+          clamp(-scrollY.value, -index * cardHeight * cardVisiblePercentage, 0)
         );
+      } else if (activeCardIndex.value === index) {
+        translateY.value = withTiming(-index * cardHeight);
       } else {
         translateY.value = withTiming(-index * cardHeight + screenHeight * 0.8);
       }

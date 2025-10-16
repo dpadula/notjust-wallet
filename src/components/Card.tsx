@@ -125,7 +125,14 @@ const Card = ({
       if (current === previous) {
         return;
       }
-      translateY.value = withTiming(-index * cardHeight + screenHeight / 2);
+      //Si no hay ninguna tarjeta activa activeCardIndex?.value = null, entonces mostrar la lista scrollable
+      if (activeCardIndex.value === null) {
+        translateY.value = withTiming(
+          clamp(-scrollY.value, -index * cardHeight * 0.95, 0)
+        );
+      } else {
+        translateY.value = withTiming(-index * cardHeight + screenHeight * 0.8);
+      }
     }
   );
 

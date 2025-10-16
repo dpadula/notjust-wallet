@@ -7,10 +7,14 @@ import {
   useWindowDimensions,
   ViewStyle,
 } from 'react-native';
+import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
   clamp,
   SharedValue,
+  useAnimatedReaction,
   useAnimatedStyle,
+  useSharedValue,
+  withTiming,
 } from 'react-native-reanimated';
 import { Brand } from '../model/types';
 import { applyAlphaToColor } from '../util/alphaColor';
@@ -22,6 +26,7 @@ import Waves from './Waves';
 
 interface CardProps {
   index: number;
+  activeCardIndex: SharedValue<number | null>;
   scrollY: SharedValue<number>;
   cardNumber: string;
   holderName?: string;
@@ -43,6 +48,7 @@ interface CardProps {
 // ====================
 const Card = ({
   index = 0,
+  activeCardIndex,
   scrollY,
   cardNumber,
   holderName = 'Card Holder',
@@ -58,15 +64,26 @@ const Card = ({
   color = '#fff',
   alphaFactor = 1,
 }: CardProps) => {
-  const { width: windowWidth } = useWindowDimensions();
-  const [cardWidth, setCardWidth] = useState(windowWidth * 0.9);
+  const { width: screenWidth, height: screenHeight } = useWindowDimensions();
+  const [cardWidth, setCardWidth] = useState(screenWidth * 0.9);
+  const [cardHeight, setCardHeight] = useState(0);
+  const translateY = useSharedValue(0);
 
   // Se usa el ancho real de la tarjeta para calcular escala
-  const scale = cardWidth / 400; // ancho de la pantalla aproximado?
+  const scale = cardWidth / screenWidth; // ancho de la pantalla aproximado?
+
+  const tap = Gesture.Tap().onEnd((e) => {
+    if (activeCardIndex.value === null) {
+      activeCardIndex.value = index;
+    } else {
+      activeCardIndex.value = null;
+    }
+  });
 
   const onLayout = (e: LayoutChangeEvent) => {
-    const { width } = e.nativeEvent.layout;
+    const { width, height } = e.nativeEvent.layout;
     setCardWidth(width);
+    setCardHeight(height + 5);
   };
 
   const defaultColorsForBrand = (brand?: Brand): string[] => {
@@ -95,52 +112,70 @@ const Card = ({
   const cardTextColor =
     alphaFactor != null ? applyAlphaToColor(color, alphaFactor) : color;
 
+  useAnimatedReaction(
+    () => scrollY.value,
+    (current) => {
+      translateY.value = clamp(-current, -index * cardHeight * 0.95, 0);
+    }
+  );
+
+  useAnimatedReaction(
+    () => activeCardIndex?.value,
+    (current, previous) => {
+      if (current === previous) {
+        return;
+      }
+      translateY.value = withTiming(-index * cardHeight + screenHeight / 2);
+    }
+  );
+
   const animatedCardStyle = useAnimatedStyle(() => {
-    const translateY = clamp(-scrollY.value, -index * 200, 0);
     return {
-      transform: [{ translateY }],
+      transform: [{ translateY: translateY.value }],
     };
   });
   return (
-    <Animated.View style={[style, animatedCardStyle]} onLayout={onLayout}>
-      <LinearGradient
-        colors={colors}
-        start={[0, 0]}
-        end={[1, 1]}
-        style={[
-          styles.gradient,
-          { borderRadius: 18 * scale, padding: 18 * scale },
-        ]}
-      >
-        <Waves borderRadius={18 * scale} height={150 * scale} />
-        {/* Top row: CardHeader = chip + brand */}
-        <CardHeader
-          showChip={showChip}
-          brand={brand}
-          brandSize={sizeBrand * scale}
-          chipSize={36 * scale}
-          paddingChip={6 * scale}
-          color={cardTextColor}
-        />
-        {/* Middle row: number + contactless */}
-        <CardBody
-          formattedNumber={formattedNumber}
-          showContactless={showContactless}
-          iconSize={24 * scale}
-          fontSize={15 * scale}
-          color={cardTextColor}
-        />
-        {/* Bottom row: name / exp / cvv */}
-        <CardFooter
-          holderName={holderName}
-          expiry={expiry}
-          cvv={cvv}
-          color={cardTextColor}
-          smallTextSize={8 * scale}
-          bigTextSize={13 * scale}
-        />
-      </LinearGradient>
-    </Animated.View>
+    <GestureDetector gesture={tap}>
+      <Animated.View style={[style, animatedCardStyle]} onLayout={onLayout}>
+        <LinearGradient
+          colors={colors}
+          start={[0, 0]}
+          end={[1, 1]}
+          style={[
+            styles.gradient,
+            { borderRadius: 18 * scale, padding: 18 * scale },
+          ]}
+        >
+          <Waves borderRadius={18 * scale} height={150 * scale} />
+          {/* Top row: CardHeader = chip + brand */}
+          <CardHeader
+            showChip={showChip}
+            brand={brand}
+            brandSize={sizeBrand * scale}
+            chipSize={36 * scale}
+            paddingChip={6 * scale}
+            color={cardTextColor}
+          />
+          {/* Middle row: number + contactless */}
+          <CardBody
+            formattedNumber={formattedNumber}
+            showContactless={showContactless}
+            iconSize={24 * scale}
+            fontSize={15 * scale}
+            color={cardTextColor}
+          />
+          {/* Bottom row: name / exp / cvv */}
+          <CardFooter
+            holderName={holderName}
+            expiry={expiry}
+            cvv={cvv}
+            color={cardTextColor}
+            smallTextSize={8 * scale}
+            bigTextSize={13 * scale}
+          />
+        </LinearGradient>
+      </Animated.View>
+    </GestureDetector>
   );
 };
 

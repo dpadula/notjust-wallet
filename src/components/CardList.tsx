@@ -131,6 +131,7 @@ const CardList = () => {
   const { height: screenHeight } = useWindowDimensions();
   const [listHeight, setListHeight] = useState(0);
   const scrollY = useSharedValue(0);
+  const activeCardIndex = useSharedValue<number | null>(null);
   const insets = useSafeAreaInsets();
   const maxScrollY = listHeight - screenHeight + insets.top;
 
@@ -138,9 +139,7 @@ const CardList = () => {
     .onBegin(() => {
       cancelAnimation(scrollY);
     })
-    .onStart(() => {
-      // console.log('pan started');
-    })
+    .onStart(() => {})
     .onChange((e) => {
       scrollY.value = clamp(scrollY.value - e.changeY, 0, maxScrollY);
     })
@@ -149,7 +148,6 @@ const CardList = () => {
         { min: 0, max: maxScrollY },
         withDecay({ velocity: -e.velocityY })
       );
-      // console.log('pan ended');
     });
   return (
     <GestureDetector gesture={pan}>
@@ -160,6 +158,7 @@ const CardList = () => {
         {cards.map((card, index) => (
           <Card
             scrollY={scrollY}
+            activeCardIndex={activeCardIndex}
             index={index}
             key={index}
             color='#0a0a0a'

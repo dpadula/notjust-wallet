@@ -181,6 +181,8 @@ export default CardList;
 const styles = StyleSheet.create({
   container: {
     padding: 10,
+    // borderColor: 'red',
+    // borderWidth: 1,
   },
   card: {
     width: '100%',

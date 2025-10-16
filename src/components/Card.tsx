@@ -70,6 +70,7 @@ const Card = ({
   const translateY = useSharedValue(0);
 
   const cardVisiblePercentage = 0.95;
+  const stackMargin = 10;
 
   // Se usa el ancho real de la tarjeta para calcular escala
   const scale = cardWidth / screenWidth; // ancho de la pantalla aproximado?
@@ -85,7 +86,7 @@ const Card = ({
   const onLayout = (e: LayoutChangeEvent) => {
     const { width, height } = e.nativeEvent.layout;
     setCardWidth(width);
-    setCardHeight(height + 5);
+    setCardHeight(height + stackMargin);
   };
 
   const defaultColorsForBrand = (brand?: Brand): string[] => {
@@ -139,7 +140,9 @@ const Card = ({
       } else if (activeCardIndex.value === index) {
         translateY.value = withTiming(-index * cardHeight);
       } else {
-        translateY.value = withTiming(-index * cardHeight + screenHeight * 0.8);
+        translateY.value = withTiming(
+          -index * cardHeight * cardVisiblePercentage + screenHeight * 0.8
+        );
       }
     }
   );

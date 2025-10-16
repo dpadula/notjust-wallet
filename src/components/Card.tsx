@@ -141,7 +141,7 @@ const Card = ({
       } else if (activeCardIndex.value === index) {
         translateY.value = withTiming(-index * cardHeight, {
           duration: 500,
-          easing: Easing.out(Easing.ease),
+          easing: Easing.out(Easing.quad),
         });
       } else {
         translateY.value = withTiming(

@@ -10,6 +10,7 @@ import {
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
   clamp,
+  Easing,
   SharedValue,
   useAnimatedReaction,
   useAnimatedStyle,
@@ -138,10 +139,17 @@ const Card = ({
           clamp(-scrollY.value, -index * cardHeight * cardVisiblePercentage, 0)
         );
       } else if (activeCardIndex.value === index) {
-        translateY.value = withTiming(-index * cardHeight);
+        translateY.value = withTiming(-index * cardHeight, {
+          duration: 500,
+          easing: Easing.out(Easing.ease),
+        });
       } else {
         translateY.value = withTiming(
-          -index * cardHeight * cardVisiblePercentage + screenHeight * 0.8
+          -index * cardHeight * cardVisiblePercentage + screenHeight * 0.8,
+          {
+            duration: 500,
+            easing: Easing.out(Easing.ease),
+          }
         );
       }
     }

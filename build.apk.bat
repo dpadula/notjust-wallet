@@ -83,3 +83,18 @@ if exist "%SIGNED_APK%" (
 echo 🚀 Proceso completado.
 pause
 endlocal
+
+
+REM ============================
+REM 7. COPY TO ROOT FOLDER
+REM ============================
+if exist "%SIGNED_APK%" (
+  echo 📲 Copiando APK al root del proyecto...
+  copy "%SIGNED_APK%" .
+) else (
+  echo ⚠️  No se encontró el APK firmado para copiar
+)
+
+echo 🚀 Proceso completado.
+pause
+endlocal
